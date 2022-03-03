@@ -15,13 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class LoginPageController {
 
-    @GetMapping({"/login"})
-    public String startPage(Model model) {
-        model.addAttribute("errorMessage", "");
-        return "login";
-    }
+//    @GetMapping({"/index"})
+//    public String startPage(Model model) {
+//        model.addAttribute("errorMessage", "");
+//        return "login";
+//    }
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public String loginPage(@RequestParam(value = "error", required = false) String error,
                             @RequestParam(value = "logout", required = false) String logout,
                             Model model) {

@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
         UserDetails admin = User
                 .withUsername("admin")
-                .authorities("ADMIN", "USER")
+                .authorities("ADMIN")
                 .password(passwordEncoder().encode("admin"))
                 .build();
         return new InMemoryUserDetailsManager(admin);
@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/*").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/*").hasAnyRole("ADMIN", "USER", "MANAGER")
                 .and()
                     .formLogin()
                     .loginPage("/login")
