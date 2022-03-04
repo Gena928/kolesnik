@@ -7,13 +7,23 @@
 
 <body>
 
-<table style="width: 100%">
-    <tr>some content in table</tr>
+<table style="width: 100%; padding: 20px; border-style: solid; border-width: 0.5px; border-color: lightgray">
+
+    <tr>
+        <td valign="top" width="60px">
+            <br/>
+            <br/>
+            <br/>
+            <a th:href="@{~/employees/list}" id="staffList" style="margin-bottom: 10px;">Пользователи</a>
+            <br/>
+            <a th:href="@{~/departments/list}" id="dept">Отделы</a>
+        </td>
+        <td valign="top">
+            <th:block layout:fragment="mainContent"></th:block>
+        </td>
+        <td style="width: 60px" valign="top"><a th:href="@{~/logout}" id="logout">Logout</a></td>
+    </tr>
 </table>
-
-<th:block layout:fragment="mainContent">
-
-</th:block>
 
 
 </body>

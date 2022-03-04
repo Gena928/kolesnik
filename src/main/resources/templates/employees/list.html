@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{fragments/MasterPage}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head>
+</head>
+<body>
+
+<th:block layout:fragment="mainContent">
+    <div style="text-align: center"><h4>Список пользователей</h4></div>
+
+    <table id="tableMain" align="center">
+        <thead>
+        <tr>
+            <th style="width:150px;">Department</th>
+            <th style="width:100px;">Login</th>
+            <th style="width:100px;">Roles</th>
+            <th style="width:150px;">Name</th>
+            <th>Is manager</th>
+            <th style="width: 100px"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employees}">
+            <td><span th:text="${employee.getDepartment().getName()}"> </span></td>
+            <td><span th:text="${employee.getEmpLogin()}"> </span></td>
+            <td><span th:text="${employee.getRolesList()}"> </span></td>
+            <td><span th:text="${employee.getName()}"> </span></td>
+
+            <td>
+                <span th:if="${employee.getIsDepartmentManager() == true}">True</span>
+                <span th:unless="${employee.getIsDepartmentManager() == true}"></span>
+            </td>
+
+            <td>
+                <span th:if="${canEdit == 'true'}">
+                    <a href="#" title="Не работает!!">Edit record</a>
+                </span>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+</th:block>
+
+</body>
+</html>
+
+

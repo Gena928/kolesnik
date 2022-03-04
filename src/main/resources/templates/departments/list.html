@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{fragments/MasterPage}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head>
+</head>
+<body>
+
+<th:block layout:fragment="mainContent">
+    <div style="text-align: center"><h4>Список отделов</h4></div>
+
+
+    <table id="tableMain" width="300 px" align="center">
+        <thead>
+        <tr>
+            <th style="width:40px;">Id</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="department : ${departments}">
+                <td><span th:text="${department.getId()}"> id </span></td>
+                <td><span th:text="${department.getName()}"> name </span></td>
+                <td>
+                    <a class="text-dark" style="display: none; text-decoration: none; cursor:pointer;"
+                       th:href="@{~/departments/edit/} + ${department.getId()}"
+                       data-toggle="tooltip" data-original-title="Edit record">
+                    </a>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+
+</th:block>
+
+</body>
+</html>
+
+

@@ -1,5 +1,6 @@
 package org.kolesnik.config;
 
+import org.kolesnik.domain.AppRoles;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -32,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
         UserDetails admin = User
                 .withUsername("admin")
-                .authorities("ADMIN", "USER")
+                .authorities(AppRoles.ADMIN.getAppRole())
                 .password(passwordEncoder().encode("admin"))
                 .build();
         return new InMemoryUserDetailsManager(admin);
@@ -42,11 +43,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/samples/create").permitAll()
+                .antMatchers("/departments/*").hasAnyAuthority(AppRoles.ADMIN.getAppRole(), AppRoles.MANAGER.getAppRole())
+                .anyRequest().authenticated()
                 .and()
                     .formLogin()
                     .loginPage("/login")
-                    .defaultSuccessUrl("/home")
+                    .defaultSuccessUrl("/employees/list")
                     .failureUrl("/login?error=true")
                     .permitAll()
                 .and()
