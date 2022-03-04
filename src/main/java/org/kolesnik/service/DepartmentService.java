@@ -2,7 +2,9 @@ package org.kolesnik.service;
 
 import lombok.RequiredArgsConstructor;
 import org.kolesnik.dao.DepartmentDao;
+import org.kolesnik.dao.EmployeeDao;
 import org.kolesnik.domain.Department;
+import org.kolesnik.domain.Employee;
 import org.kolesnik.error.EntityNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -17,6 +20,7 @@ import java.util.List;
 public class DepartmentService {
 
     private final DepartmentDao departmentDao;
+    private final EmployeeService employeeService;
     private final InMemoryUserDetailsManager userDetailsManager;
 
     public List<Department> getAll() {
@@ -25,7 +29,15 @@ public class DepartmentService {
 
     public List<Department> getAllForUser(String userName){
         UserDetails details = userDetailsManager.loadUserByUsername(userName);
-        return departmentDao.getAll();
+        if (employeeService.isEmployeeAdmin(details.getUsername())){
+            return departmentDao.getAll();
+        }
+        Employee employee = employeeService.getByUserName(details.getUsername());
+        return departmentDao
+                .getAll()
+                .stream()
+                .filter(d->d.getId() == employee.getDepartment().getId())
+                .collect(Collectors.toList());
     }
 
     public Department getById(int id) {
